@@ -5,6 +5,7 @@ import pkg_resources
 
 import jinja2
 import ansible.plugins.filter.core
+import ansible.template
 import yaml
 
 
@@ -39,6 +40,7 @@ def _make_template_env(search_path):
         loader=jinja2.FileSystemLoader(
             searchpath=str(search_path),
         ),
+        undefined=ansible.template.AnsibleUndefined,
         keep_trailing_newline=True,
         lstrip_blocks=True,
         trim_blocks=True,
