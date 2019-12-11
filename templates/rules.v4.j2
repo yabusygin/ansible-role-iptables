@@ -27,7 +27,7 @@
 {{ macros.rule("FORWARD", rule.options) }}
         {% endfor %}
     {% endif %}
-    {% if iptables_filter_output_enabled %}
+    {% if iptables_filter_output_rules %}
 
         {% for rule in iptables_filter_output_before_rules %}
 {{ macros.rule("OUTPUT", rule.options) }}

@@ -30,7 +30,6 @@ iptables_filter_forward_before_rules:
     jump: DROP
 iptables_filter_forward_rules: []
 
-iptables_filter_output_enabled: no
 iptables_filter_output_policy: ACCEPT
 iptables_filter_output_before_rules: []
 iptables_filter_output_rules: []
