@@ -18,7 +18,7 @@
 {{ macros.rule("INPUT", rule.options) }}
         {% endfor %}
     {% endif %}
-    {% if iptables_filter_forward_enabled %}
+    {% if iptables_filter_forward_rules %}
 
         {% for rule in iptables_filter_forward_before_rules %}
 {{ macros.rule("FORWARD", rule.options) }}

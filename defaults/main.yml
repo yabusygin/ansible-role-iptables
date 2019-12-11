@@ -16,7 +16,6 @@ iptables_filter_input_before_rules:
     jump: DROP
 iptables_filter_input_rules: []
 
-iptables_filter_forward_enabled: no
 iptables_filter_forward_policy: DROP
 iptables_filter_forward_before_rules:
 - options:
