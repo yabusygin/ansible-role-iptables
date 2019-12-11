@@ -1,0 +1,35 @@
+---
+iptables_filter_input_policy: ACCEPT
+iptables_filter_forward_policy: ACCEPT
+iptables_filter_output_policy: DROP
+iptables:
+  filter:
+  - chain: INPUT
+    default_policy: DROP
+    rules:
+    - options:
+        in_interface: eth0
+        jump: I_MGMT
+
+  - chain: FORWARD
+    default_policy: DROP
+    rules:
+    - options:
+        in_interface: eth0
+        out_interface: eth0
+        jump: ACCEPT
+    - options:
+        in_interface: eth1
+        out_interface: eth1
+        jump: ACCEPT
+    - options:
+        in_interface: eth0
+        out_interface: eth1
+        jump: ACCEPT
+
+  - chain: OUTPUT
+    default_policy: ACCEPT
+    rules:
+    - options:
+        destination: 10.10.10.10
+        jump: DROP

@@ -1,0 +1,24 @@
+{% macro rule_group(chain, rules) %}
+    {% for rule in rules %}
+{{ macros.rule("INPUT", rule.options) }}
+    {% endfor %}
+{% endmacro %}
+
+{% macro rule(chain, options) -%}
+    --append {{ chain }}
+    {%- for keyword in options -%}
+        {{ " " ~ _option_name(keyword) ~ " " ~ _option_value(options[keyword]) }}
+    {%- endfor %}
+{% endmacro %}
+
+{% macro _option_name(keyword) -%}
+    {{ ("--" ~ keyword) | regex_replace("_", "-") | regex_replace("^--not-(.*)$", "! --\\1") }}
+{%- endmacro %}
+
+{% macro _option_value(value) %}
+    {% if value is sequence and value is not string -%}
+        {{ value | join(",") }}
+    {%- else -%}
+        {{ value }}
+    {%- endif %}
+{% endmacro %}
