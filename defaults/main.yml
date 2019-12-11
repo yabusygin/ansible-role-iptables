@@ -35,3 +35,6 @@ iptables_filter_output_enabled: no
 iptables_filter_output_before_rules: []
 iptables_filter_output_rules: []
 iptables_filter_user_chains: []
+
+iptables_nat_enabled: no
+iptables_raw_enabled: no

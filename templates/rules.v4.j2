@@ -1,7 +1,7 @@
-{% extends "vars.j2" %}
+{% extends "tables.j2" %}
 {% import "macro.j2" as macros -%}
 
-{% block rules %}
+{% block filter_table %}
 *filter
 :INPUT {{ iptables_filter_input_policy }} [0:0]
 :FORWARD {{ iptables_filter_forward_policy }} [0:0]
