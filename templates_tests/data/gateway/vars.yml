@@ -1,0 +1,96 @@
+---
+iptables:
+  filter:
+  - chain: INPUT
+    rules:
+    - options:
+        in_interface: eth0
+        jump: I_MGMT
+
+  - chain: FORWARD
+    rules:
+    - options:
+        in_interface: eth0
+        out_interface: eth0
+        jump: ACCEPT
+    - options:
+        in_interface: eth1
+        out_interface: eth1
+        jump: ACCEPT
+    - options:
+        in_interface: eth2
+        out_interface: eth2
+        jump: ACCEPT
+    - options:
+        in_interface: eth3
+        out_interface: eth3
+        jump: ACCEPT
+    - options:
+        in_interface: eth1
+        out_interface: eth2
+        jump: F_PRIVATE_TO_DMZ
+    - options:
+        in_interface: eth1
+        out_interface: eth3
+        jump: F_PRIVATE_TO_PUBLIC
+    - options:
+        in_interface: eth2
+        out_interface: eth3
+        jump: F_DMZ_TO_PUBLIC
+    - options:
+        in_interface: eth3
+        out_interface: eth2
+        jump: F_PUBLIC_TO_DMZ
+
+  - chain: OUTPUT
+    rules:
+    - options:
+        destination: 10.10.10.10
+        jump: DROP
+
+  - chain: I_MGMT
+    rules:
+    - options:
+        protocol: tcp
+        destination_port: 22
+        jump: ACCEPT
+    - options:
+        jump: DROP
+
+  - chain: F_PRIVATE_TO_DMZ
+    rules:
+    - options:
+        not_source: 192.168.0.0/28
+        jump: ACCEPT
+    - options:
+        jump: DROP
+
+  - chain: F_PRIVATE_TO_PUBLIC
+    rules:
+    - options:
+        not_source: 192.168.0.0/28
+        jump: ACCEPT
+    - options:
+        jump: DROP
+
+  - chain: F_DMZ_TO_PUBLIC
+    rules:
+    - options:
+        jump: ACCEPT
+    - options:
+        jump: DROP
+
+  - chain: F_PUBLIC_TO_DMZ
+    rules:
+    - options:
+        destination: 172.16.0.10
+        protocol: tcp
+        destination_port: 80
+        jump: ACCEPT
+    - options:
+        destination: 172.16.0.10
+        protocol: tcp
+        destination_port: 443
+        jump: ACCEPT
+    - options:
+        jump: DROP

@@ -1,0 +1,13 @@
+---
+iptables:
+  filter:
+  - chain: INPUT
+    rules:
+    - options:
+        protocol: udp
+        match: udp
+        source_port: 67
+        destination_port: 68
+        jump: ACCEPT
+    - options:
+        jump: DROP

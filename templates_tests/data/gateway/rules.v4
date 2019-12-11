@@ -1,0 +1,44 @@
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+:I_MGMT - [0:0]
+:F_PRIVATE_TO_DMZ - [0:0]
+:F_PRIVATE_TO_PUBLIC - [0:0]
+:F_DMZ_TO_PUBLIC - [0:0]
+:F_PUBLIC_TO_DMZ - [0:0]
+
+--append INPUT --in-interface lo --jump ACCEPT
+--append INPUT --match conntrack --ctstate RELATED,ESTABLISHED --jump ACCEPT
+--append INPUT --match conntrack --ctstate INVALID --jump DROP
+--append INPUT --in-interface eth0 --jump I_MGMT
+
+--append FORWARD --match conntrack --ctstate RELATED,ESTABLISHED --jump ACCEPT
+--append FORWARD --match conntrack --ctstate INVALID --jump DROP
+--append FORWARD --in-interface eth0 --out-interface eth0 --jump ACCEPT
+--append FORWARD --in-interface eth1 --out-interface eth1 --jump ACCEPT
+--append FORWARD --in-interface eth2 --out-interface eth2 --jump ACCEPT
+--append FORWARD --in-interface eth3 --out-interface eth3 --jump ACCEPT
+--append FORWARD --in-interface eth1 --out-interface eth2 --jump F_PRIVATE_TO_DMZ
+--append FORWARD --in-interface eth1 --out-interface eth3 --jump F_PRIVATE_TO_PUBLIC
+--append FORWARD --in-interface eth2 --out-interface eth3 --jump F_DMZ_TO_PUBLIC
+--append FORWARD --in-interface eth3 --out-interface eth2 --jump F_PUBLIC_TO_DMZ
+
+--append OUTPUT --destination 10.10.10.10 --jump DROP
+
+--append I_MGMT --protocol tcp --destination-port 22 --jump ACCEPT
+--append I_MGMT --jump DROP
+
+--append F_PRIVATE_TO_DMZ ! --source 192.168.0.0/28 --jump ACCEPT
+--append F_PRIVATE_TO_DMZ --jump DROP
+
+--append F_PRIVATE_TO_PUBLIC ! --source 192.168.0.0/28 --jump ACCEPT
+--append F_PRIVATE_TO_PUBLIC --jump DROP
+
+--append F_DMZ_TO_PUBLIC --jump ACCEPT
+--append F_DMZ_TO_PUBLIC --jump DROP
+
+--append F_PUBLIC_TO_DMZ --destination 172.16.0.10 --protocol tcp --destination-port 80 --jump ACCEPT
+--append F_PUBLIC_TO_DMZ --destination 172.16.0.10 --protocol tcp --destination-port 443 --jump ACCEPT
+--append F_PUBLIC_TO_DMZ --jump DROP
+COMMIT
