@@ -9,7 +9,7 @@
     {% for chain in iptables_filter_user_chains %}
 :{{ chain.chain }} - [0:0]
     {% endfor %}
-    {% if iptables_filter_input_enabled %}
+    {% if iptables_filter_input_before_rules or iptables_filter_input_rules %}
 
         {% for rule in iptables_filter_input_before_rules %}
 {{ macros.rule("INPUT", rule.options) }}

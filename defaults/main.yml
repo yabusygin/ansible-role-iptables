@@ -1,5 +1,4 @@
 ---
-iptables_filter_input_enabled: yes
 iptables_filter_input_policy: DROP
 iptables_filter_input_before_rules:
 - options:
