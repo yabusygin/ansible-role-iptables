@@ -2,12 +2,4 @@
 
 {% block rules %}
     {% block filter_table %}{% endblock %}
-    {% if iptables_nat_enabled %}
-
-        {% block nat_table %}{% endblock %}
-    {% endif %}
-    {% if iptables_raw_enabled %}
-
-        {% block raw_table %}{% endblock %}
-    {% endif %}
 {% endblock %}
