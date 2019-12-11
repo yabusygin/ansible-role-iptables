@@ -1,2 +1,26 @@
 ---
-# tasks file for iptables
+- name: install iptables-persistent
+  apt:
+    name: iptables-persistent
+    state: present
+    force_apt_get: yes
+
+- name: create iptables config directory
+  file:
+    path: /etc/iptables/
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+
+- name: upload rules
+  template:
+    src: rules.v4.j2
+    dest: /etc/iptables/rules.v4
+    lstrip_blocks: yes
+    trim_blocks: yes
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+  - enable rules
