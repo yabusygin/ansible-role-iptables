@@ -1,39 +1,37 @@
 {% import "macro.j2" as macros -%}
 
-{% if iptables is defined %}
-    {% if "filter" in iptables %}
-        {% if iptables.filter|selectattr("chain", "eq", "INPUT")|list|length > 0 %}
-            {% if "default_policy" in iptables.filter|selectattr("chain", "eq", "INPUT")|first %}
-                {% set iptables_filter_input_policy = (iptables.filter|selectattr("chain", "eq", "INPUT")|first).default_policy %}
-            {% endif %}
-            {% if "rules" in iptables.filter|selectattr("chain", "eq", "INPUT")|first %}
-                {% set iptables_filter_input_rules = (iptables.filter|selectattr("chain", "eq", "INPUT")|first).rules %}
-            {% endif %}
+{% if iptables.filter is defined %}
+    {% if iptables.filter|selectattr("chain", "eq", "INPUT")|list|length > 0 %}
+        {% if "default_policy" in iptables.filter|selectattr("chain", "eq", "INPUT")|first %}
+            {% set iptables_filter_input_policy = (iptables.filter|selectattr("chain", "eq", "INPUT")|first).default_policy %}
         {% endif %}
-        {% if iptables.filter|selectattr("chain", "eq", "FORWARD")|list|length > 0 %}
-            {% set iptables_filter_forward_enabled = true %}
-            {% if "default_policy" in iptables.filter|selectattr("chain", "eq", "FORWARD")|first %}
-                {% set iptables_filter_forward_policy = (iptables.filter|selectattr("chain", "eq", "FORWARD")|first).default_policy %}
-            {% endif %}
-            {% if "rules" in iptables.filter|selectattr("chain", "eq", "FORWARD")|first %}
-                {% set iptables_filter_forward_rules = (iptables.filter|selectattr("chain", "eq", "FORWARD")|first).rules %}
-            {% endif %}
+        {% if "rules" in iptables.filter|selectattr("chain", "eq", "INPUT")|first %}
+            {% set iptables_filter_input_rules = (iptables.filter|selectattr("chain", "eq", "INPUT")|first).rules %}
         {% endif %}
-        {% if iptables.filter|selectattr("chain", "eq", "OUTPUT")|list|length > 0 %}
-            {% set iptables_filter_output_enabled = true %}
-            {% if "default_policy" in iptables.filter|selectattr("chain", "eq", "OUTPUT")|first %}
-                {% set iptables_filter_output_policy = (iptables.filter|selectattr("chain", "eq", "OUTPUT")|first).default_policy %}
-            {% endif %}
-            {% if "rules" in iptables.filter|selectattr("chain", "eq", "OUTPUT")|first %}
-                {% set iptables_filter_output_rules = (iptables.filter|selectattr("chain", "eq", "OUTPUT")|first).rules %}
-            {% endif %}
-        {% endif %}
-        {% set iptables_filter_user_chains = iptables.filter
-            | selectattr("chain", "ne", "INPUT")
-            | selectattr("chain", "ne", "FORWARD")
-            | selectattr("chain", "ne", "OUTPUT")
-            | list %}
     {% endif %}
+    {% if iptables.filter|selectattr("chain", "eq", "FORWARD")|list|length > 0 %}
+        {% set iptables_filter_forward_enabled = true %}
+        {% if "default_policy" in iptables.filter|selectattr("chain", "eq", "FORWARD")|first %}
+            {% set iptables_filter_forward_policy = (iptables.filter|selectattr("chain", "eq", "FORWARD")|first).default_policy %}
+        {% endif %}
+        {% if "rules" in iptables.filter|selectattr("chain", "eq", "FORWARD")|first %}
+            {% set iptables_filter_forward_rules = (iptables.filter|selectattr("chain", "eq", "FORWARD")|first).rules %}
+        {% endif %}
+    {% endif %}
+    {% if iptables.filter|selectattr("chain", "eq", "OUTPUT")|list|length > 0 %}
+        {% set iptables_filter_output_enabled = true %}
+        {% if "default_policy" in iptables.filter|selectattr("chain", "eq", "OUTPUT")|first %}
+            {% set iptables_filter_output_policy = (iptables.filter|selectattr("chain", "eq", "OUTPUT")|first).default_policy %}
+        {% endif %}
+        {% if "rules" in iptables.filter|selectattr("chain", "eq", "OUTPUT")|first %}
+            {% set iptables_filter_output_rules = (iptables.filter|selectattr("chain", "eq", "OUTPUT")|first).rules %}
+        {% endif %}
+    {% endif %}
+    {% set iptables_filter_user_chains = iptables.filter
+        | selectattr("chain", "ne", "INPUT")
+        | selectattr("chain", "ne", "FORWARD")
+        | selectattr("chain", "ne", "OUTPUT")
+        | list %}
 {% endif -%}
 
 *filter
