@@ -1,6 +1,5 @@
 {% if iptables.filter is defined %}
     {% if iptables.filter|selectattr("chain", "eq", "INPUT")|list|length > 0 %}
-        {% set iptables_filter_input_enabled = true %}
         {% set iptables_filter_input = iptables.filter|selectattr("chain", "eq", "INPUT")|first %}
         {% if iptables_filter_input.default_policy is defined %}
             {% set iptables_filter_input_policy = iptables_filter_input.default_policy %}
@@ -10,7 +9,6 @@
         {% endif %}
     {% endif %}
     {% if iptables.filter|selectattr("chain", "eq", "FORWARD")|list|length > 0 %}
-        {% set iptables_filter_forward_enabled = true %}
         {% set iptables_filter_forward = iptables.filter|selectattr("chain", "eq", "FORWARD")|first %}
         {% if iptables_filter_forward.default_policy is defined %}
             {% set iptables_filter_forward_policy = iptables_filter_forward.default_policy %}
@@ -20,7 +18,6 @@
         {% endif %}
     {% endif %}
     {% if iptables.filter|selectattr("chain", "eq", "OUTPUT")|list|length > 0 %}
-        {% set iptables_filter_output_enabled = true %}
         {% set iptables_filter_output = iptables.filter|selectattr("chain", "eq", "OUTPUT")|first %}
         {% if iptables_filter_output.default_policy is defined %}
             {% set iptables_filter_output_policy = iptables_filter_output.default_policy %}
