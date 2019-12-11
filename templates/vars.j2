@@ -1,0 +1,39 @@
+{% if iptables.filter is defined %}
+    {% if iptables.filter|selectattr("chain", "eq", "INPUT")|list|length > 0 %}
+        {% set iptables_filter_input_enabled = true %}
+        {% set iptables_filter_input = iptables.filter|selectattr("chain", "eq", "INPUT")|first %}
+        {% if iptables_filter_input.default_policy is defined %}
+            {% set iptables_filter_input_policy = iptables_filter_input.default_policy %}
+        {% endif %}
+        {% if iptables_filter_input.rules is defined %}
+            {% set iptables_filter_input_rules = iptables_filter_input.rules %}
+        {% endif %}
+    {% endif %}
+    {% if iptables.filter|selectattr("chain", "eq", "FORWARD")|list|length > 0 %}
+        {% set iptables_filter_forward_enabled = true %}
+        {% set iptables_filter_forward = iptables.filter|selectattr("chain", "eq", "FORWARD")|first %}
+        {% if iptables_filter_forward.default_policy is defined %}
+            {% set iptables_filter_forward_policy = iptables_filter_forward.default_policy %}
+        {% endif %}
+        {% if iptables_filter_forward.rules is defined %}
+            {% set iptables_filter_forward_rules = iptables_filter_forward.rules %}
+        {% endif %}
+    {% endif %}
+    {% if iptables.filter|selectattr("chain", "eq", "OUTPUT")|list|length > 0 %}
+        {% set iptables_filter_output_enabled = true %}
+        {% set iptables_filter_output = iptables.filter|selectattr("chain", "eq", "OUTPUT")|first %}
+        {% if iptables_filter_output.default_policy is defined %}
+            {% set iptables_filter_output_policy = iptables_filter_output.default_policy %}
+        {% endif %}
+        {% if iptables_filter_output.rules is defined %}
+            {% set iptables_filter_output_rules = iptables_filter_output.rules %}
+        {% endif %}
+    {% endif %}
+    {% set iptables_filter_user_chains = iptables.filter
+        | selectattr("chain", "ne", "INPUT")
+        | selectattr("chain", "ne", "FORWARD")
+        | selectattr("chain", "ne", "OUTPUT")
+        | list %}
+{% endif -%}
+
+{% block rules %}{% endblock %}
