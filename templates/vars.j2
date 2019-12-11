@@ -27,10 +27,10 @@
         {% endif %}
     {% endif %}
     {% set iptables_filter_user_chains = iptables.filter
-        | selectattr("chain", "ne", "INPUT")
-        | selectattr("chain", "ne", "FORWARD")
-        | selectattr("chain", "ne", "OUTPUT")
-        | list %}
+        |selectattr("chain", "ne", "INPUT")
+        |selectattr("chain", "ne", "FORWARD")
+        |selectattr("chain", "ne", "OUTPUT")
+        |list %}
 {% endif -%}
 
 {% block rules %}{% endblock %}
