@@ -1,6 +1,6 @@
 ---
-iptables_filter_input_policy: DROP
 iptables_filter_input_enabled: yes
+iptables_filter_input_policy: DROP
 iptables_filter_input_before_rules:
 - options:
     in_interface: lo
@@ -16,8 +16,9 @@ iptables_filter_input_before_rules:
     ctstate: INVALID
     jump: DROP
 iptables_filter_input_rules: []
-iptables_filter_forward_policy: DROP
+
 iptables_filter_forward_enabled: no
+iptables_filter_forward_policy: DROP
 iptables_filter_forward_before_rules:
 - options:
     match: conntrack
@@ -30,11 +31,14 @@ iptables_filter_forward_before_rules:
     ctstate: INVALID
     jump: DROP
 iptables_filter_forward_rules: []
-iptables_filter_output_policy: ACCEPT
+
 iptables_filter_output_enabled: no
+iptables_filter_output_policy: ACCEPT
 iptables_filter_output_before_rules: []
 iptables_filter_output_rules: []
+
 iptables_filter_user_chains: []
 
 iptables_nat_enabled: no
+
 iptables_raw_enabled: no
