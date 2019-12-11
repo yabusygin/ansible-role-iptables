@@ -1,14 +1,7 @@
 {% extends "tables.j2" %}
 {% import "macro.j2" as macros -%}
 
-{% block filter_table %}
-*filter
-:INPUT {{ iptables_filter_input_policy }} [0:0]
-:FORWARD {{ iptables_filter_forward_policy }} [0:0]
-:OUTPUT {{ iptables_filter_output_policy }} [0:0]
-    {% for chain in iptables_filter_user_chains %}
-:{{ chain.chain }} - [0:0]
-    {% endfor %}
+{% block filter_rules %}
     {% if iptables_filter_input_before_rules or iptables_filter_input_rules %}
 
         {% for rule in iptables_filter_input_before_rules %}
@@ -44,5 +37,4 @@
             {% endfor %}
         {% endif %}
     {% endfor %}
-COMMIT
-{% endblock %}
+{% endblock filter_rules %}
