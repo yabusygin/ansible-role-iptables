@@ -19,6 +19,12 @@ iptables:
   - chain: INPUT
     rules:
     - options:
+        in_interface: eth0
+        protocol: tcp
+        match: tcp
+        destination_port: 22
+        jump: ACCEPT
+    - options:
         protocol: tcp
         match: tcp
         destination_port: 80
