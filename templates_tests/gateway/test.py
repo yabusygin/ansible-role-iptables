@@ -8,13 +8,13 @@ except ImportError:
     import importlib_resources as resources
 
 from ..utils import (
-    relative_to_path,
+    resolve_path,
     render_role_template,
     yaml_parse,
 )
 
 
-_ROLE_PATH = relative_to_path(
+_ROLE_PATH = resolve_path(
     base_path=pathlib.Path(__file__),
     relative_path=pathlib.Path("..", ".."),
 )

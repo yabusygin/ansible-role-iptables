@@ -8,7 +8,7 @@ import ansible.template
 import yaml
 
 
-def relative_to_path(base_path, relative_path):
+def resolve_path(base_path, relative_path):
     """Resolve path relative to base path."""
     if not base_path.is_dir():
         base_path = base_path.parent
