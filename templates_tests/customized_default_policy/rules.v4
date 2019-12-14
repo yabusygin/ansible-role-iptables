@@ -1,18 +1,9 @@
 *filter
-:INPUT DROP [0:0]
-:FORWARD DROP [0:0]
-:OUTPUT ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT DROP [0:0]
 
 --append INPUT --in-interface lo --jump ACCEPT
 --append INPUT --match conntrack --ctstate RELATED,ESTABLISHED --jump ACCEPT
 --append INPUT --match conntrack --ctstate INVALID --jump DROP
---append INPUT --in-interface eth0 --jump I_MGMT
-
---append FORWARD --match conntrack --ctstate RELATED,ESTABLISHED --jump ACCEPT
---append FORWARD --match conntrack --ctstate INVALID --jump DROP
---append FORWARD --in-interface eth0 --out-interface eth0 --jump ACCEPT
---append FORWARD --in-interface eth1 --out-interface eth1 --jump ACCEPT
---append FORWARD --in-interface eth0 --out-interface eth1 --jump ACCEPT
-
---append OUTPUT --destination 10.10.10.10 --jump DROP
 COMMIT
