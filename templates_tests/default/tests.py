@@ -10,6 +10,7 @@ except ImportError:
 from ..utils import (
     relative_to_path,
     render_role_template,
+    yaml_parse,
 )
 
 
@@ -29,8 +30,17 @@ class DefaultRules(unittest.TestCase):
             package=__package__,
             resource="rules.v4",
         )
+        variables = None
+        if resources.is_resource(package=__package__, name="vars.yml"):
+            variables = yaml_parse(
+                data=resources.read_text(
+                    package=__package__,
+                    resource="vars.yml",
+                ),
+            )
         actual = render_role_template(
             role_path=_ROLE_PATH,
             template_filename=_TEMPLATE_FILENAME,
+            variables=variables,
         )
         self.assertEqual(expect, actual)
