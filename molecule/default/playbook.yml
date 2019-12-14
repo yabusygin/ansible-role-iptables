@@ -4,3 +4,10 @@
   roles:
     - role: networkd
     - role: iptables
+  tasks:
+    - name: install nmap
+      apt:
+        name: nmap
+        state: present
+        force_apt_get: yes
+        update_cache: yes
