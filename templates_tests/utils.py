@@ -16,7 +16,7 @@ def resolve_path(base_path, relative_path):
 
 
 def render_role_template(role_path, template_filename, variables=None):
-    """Render file from Ansible role template."""
+    """Render content from Ansible role template."""
     template_variables = {}
     default_variables_path = pathlib.Path(role_path, "defaults", "main.yml")
     if default_variables_path.exists():
