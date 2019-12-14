@@ -1,0 +1,2 @@
+- src: https://github.com/yabusygin/ansible-role-networkd
+  name: networkd

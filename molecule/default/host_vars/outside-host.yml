@@ -1,0 +1,19 @@
+---
+ansible_become: yes
+
+networkd:
+  ifaces:
+    - name: eth0
+      network:
+        dhcp: ipv4
+    - name: eth1
+      address: 10.0.0.10/24
+      routes:
+        - dest: 172.16.0.0/24
+          next_hop: 10.0.0.1
+        - dest: 192.168.0.0/24
+          next_hop: 10.0.0.1
+
+iptables_filter_input_policy: ACCEPT
+iptables_filter_forward_policy: ACCEPT
+iptables_filter_input_before_rules: []

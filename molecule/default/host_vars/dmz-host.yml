@@ -1,0 +1,38 @@
+---
+ansible_become: yes
+
+networkd:
+  ifaces:
+    - name: eth0
+      network:
+        dhcp: ipv4
+    - name: eth1
+      address: 172.16.0.10/24
+      routes:
+        - dest: 10.0.0.0/24
+          next_hop: 172.16.0.1
+        - dest: 192.168.0.0/24
+          next_hop: 172.16.0.1
+
+iptables:
+  filter:
+  - chain: INPUT
+    rules:
+    - options:
+        in_interface: eth0
+        protocol: tcp
+        match: tcp
+        destination_port: 22
+        jump: ACCEPT
+    - options:
+        protocol: tcp
+        match: tcp
+        destination_port: 80
+        jump: ACCEPT
+    - options:
+        protocol: tcp
+        match: tcp
+        destination_port: 443
+        jump: ACCEPT
+    - options:
+        jump: DROP

@@ -1,0 +1,318 @@
+---
+- name: scan from outside network
+  hosts: outside-host
+  tasks:
+    - name: scan DMZ host
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 172.16.0.10
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of DMZ host is filtered
+      assert:
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of DMZ host is closed
+      assert:
+        that: 'result.stdout is search("80/tcp\s+closed\s+http")'
+
+    - name: check that HTTPS port of DMZ host is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
+
+    - name: scan inside host
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 192.168.0.10
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of inside host is filtered
+      assert:
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of inside host is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of inside host is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
+
+    - name: scan outside interface of gateway
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 10.0.0.1
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of gateway outside interface is filtered
+      assert:
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of gateway outside interface is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of gateway outside interface is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
+
+    - name: scan dmz interface of gateway
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 172.16.0.1
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of gateway dmz interface is filtered
+      assert:
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of gateway dmz interface is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of gateway dmz interface is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
+
+    - name: scan inside interface of gateway
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 192.168.0.1
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of gateway inside interface is filtered
+      assert:
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of gateway inside interface is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of gateway inside interface is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
+
+- name: scan from dmz network
+  hosts: dmz-host
+  tasks:
+    - name: scan outside host
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 10.0.0.10
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of outside host is open
+      assert:
+        that: 'result.stdout is search("22/tcp\s+open\s+ssh")'
+
+    - name: check that HTTP port of outside host is closed
+      assert:
+        that: 'result.stdout is search("80/tcp\s+closed\s+http")'
+
+    - name: check that HTTPS port of outside host is closed
+      assert:
+        that: 'result.stdout is search("443/tcp\s+closed\s+http")'
+
+    - name: scan inside host
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 192.168.0.10
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of inside host is filtered
+      assert:
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of inside host is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of inside host is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
+
+    - name: scan outside interface of gateway
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 10.0.0.1
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of gateway outside interface is filtered
+      assert:
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of gateway outside interface is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of gateway outside interface is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
+
+    - name: scan dmz interface of gateway
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 172.16.0.1
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of gateway dmz interface is filtered
+      assert:
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of gateway dmz interface is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of gateway dmz interface is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
+
+    - name: scan inside interface of gateway
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 192.168.0.1
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of gateway inside interface is filtered
+      assert:
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of gateway inside interface is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of gateway inside interface is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
+
+- name: scan from inside network
+  hosts: inside-host
+  tasks:
+    - name: scan outside host
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 10.0.0.10
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of outside host is open
+      assert:
+        that: 'result.stdout is search("22/tcp\s+open\s+ssh")'
+
+    - name: check that HTTP port of outside host is closed
+      assert:
+        that: 'result.stdout is search("80/tcp\s+closed\s+http")'
+
+    - name: check that HTTPS port of outside host is closed
+      assert:
+        that: 'result.stdout is search("443/tcp\s+closed\s+http")'
+
+    - name: scan dmz host
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 172.16.0.10
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of dmz host is filtered
+      assert:
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of dmz host is closed
+      assert:
+        that: 'result.stdout is search("80/tcp\s+closed\s+http")'
+
+    - name: check that HTTPS port of dmz host is closed
+      assert:
+        that: 'result.stdout is search("443/tcp\s+closed\s+http")'
+
+    - name: scan outside interface of gateway
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 10.0.0.1
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of gateway outside interface is filtered
+      assert:
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of gateway outside interface is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of gateway outside interface is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
+
+    - name: scan dmz interface of gateway
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 172.16.0.1
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of gateway dmz interface is filtered
+      assert:
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of gateway dmz interface is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of gateway dmz interface is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
+
+    - name: scan inside interface of gateway
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 192.168.0.1
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of gateway inside interface is filtered
+      assert:
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of gateway inside interface is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of gateway inside interface is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
+
+- name: scan from gateway
+  hosts: gateway
+  tasks:
+    - name: scan inside host
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 192.168.0.10
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of inside host is filtered
+      assert:
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of inside host is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of inside host is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
+
+    - name: scan dmz host
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 172.16.0.10
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of dmz host is filtered
+      assert:
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of dmz host is closed
+      assert:
+        that: 'result.stdout is search("80/tcp\s+closed\s+http")'
+
+    - name: check that HTTPS port of dmz host is closed
+      assert:
+        that: 'result.stdout is search("443/tcp\s+closed\s+http")'
+
+    - name: scan outside host
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 10.0.0.10
+      register: result
+      changed_when: false
+
+    - name: check that SSH port of outside host is open
+      assert:
+        that: 'result.stdout is search("22/tcp\s+open\s+ssh")'
+
+    - name: check that HTTP port of outside host is closed
+      assert:
+        that: 'result.stdout is search("80/tcp\s+closed\s+http")'
+
+    - name: check that HTTPS port of outside host is closed
+      assert:
+        that: 'result.stdout is search("443/tcp\s+closed\s+http")'
