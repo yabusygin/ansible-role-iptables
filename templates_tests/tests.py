@@ -40,28 +40,6 @@ class AcceptAllRules(unittest.TestCase):
         self.assertEqual(expect, actual)
 
 
-class GatewayRules(unittest.TestCase):
-    """Test gateway rules."""
-
-    def test(self):
-        """Run test."""
-        expect = resource_str(
-            resource_path=pathlib.Path("gateway", "rules.v4"),
-            package=__name__,
-        )
-        context_manager = resource_abs_path(
-            resource_path=pathlib.Path("gateway", "vars.yml"),
-            package=__name__,
-        )
-        with context_manager as variables_path:
-            actual = render_role_template(
-                role_path=_ROLE_PATH,
-                template_filename=_TEMPLATE_FILENAME,
-                variables_path=variables_path,
-            )
-        self.assertEqual(expect, actual)
-
-
 class CustomizedDefaultPolicies(unittest.TestCase):
     """Test customized default policies."""
 
