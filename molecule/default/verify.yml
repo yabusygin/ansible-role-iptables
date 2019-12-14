@@ -3,102 +3,174 @@
   hosts: outside-host
   tasks:
     - name: scan DMZ host
-      command: nmap -Pn -n -sS -p1-1024 -TAggressive 172.16.0.10
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 172.16.0.10
       register: result
       changed_when: false
 
-    - name: check that HTTP port is closed
+    - name: check that SSH port of DMZ host is filtered
+      assert:
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of DMZ host is closed
       assert:
         that: 'result.stdout is search("80/tcp\s+closed\s+http")'
 
-    - name: check that other ports are filtered
+    - name: check that HTTPS port of DMZ host is filtered
       assert:
-        that: 'result.stdout is search("Not shown: 1023 filtered ports")'
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
 
     - name: scan inside host
-      command: nmap -Pn -n -sS -p1-1024 -TAggressive 192.168.0.10
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 192.168.0.10
       register: result
       changed_when: false
 
-    - name: check that all ports are filtered
+    - name: check that SSH port of inside host is filtered
       assert:
-        that: 'result.stdout is search("All 1024 scanned ports on 192.168.0.10 are filtered")'
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of inside host is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of inside host is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
 
     - name: scan outside interface of gateway
-      command: nmap -Pn -n -sS -p1-1024 -TAggressive 10.0.0.1
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 10.0.0.1
       register: result
       changed_when: false
 
-    - name: check that all ports are filtered
+    - name: check that SSH port of gateway outside interface is filtered
       assert:
-        that: 'result.stdout is search("All 1024 scanned ports on 10.0.0.1 are filtered")'
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of gateway outside interface is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of gateway outside interface is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
 
     - name: scan dmz interface of gateway
-      command: nmap -Pn -n -sS -p1-1024 -TAggressive 172.16.0.1
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 172.16.0.1
       register: result
       changed_when: false
 
-    - name: check that all ports are filtered
+    - name: check that SSH port of gateway dmz interface is filtered
       assert:
-        that: 'result.stdout is search("All 1024 scanned ports on 172.16.0.1 are filtered")'
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of gateway dmz interface is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of gateway dmz interface is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
 
     - name: scan inside interface of gateway
-      command: nmap -Pn -n -sS -p1-1024 -TAggressive 192.168.0.1
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 192.168.0.1
       register: result
       changed_when: false
 
-    - name: check that all ports are filtered
+    - name: check that SSH port of gateway inside interface is filtered
       assert:
-        that: 'result.stdout is search("All 1024 scanned ports on 192.168.0.1 are filtered")'
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of gateway inside interface is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of gateway inside interface is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
 
 - name: scan from dmz network
   hosts: dmz-host
   tasks:
-    - name: scan DMZ host
-      command: nmap -Pn -n -sS -p1-1024 -TAggressive 10.0.0.10
+    - name: scan outside host
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 10.0.0.10
       register: result
       changed_when: false
 
-    - name: check that SSH port is open
+    - name: check that SSH port of outside host is open
       assert:
         that: 'result.stdout is search("22/tcp\s+open\s+ssh")'
 
-    - name: check that other ports are closed
+    - name: check that HTTP port of outside host is closed
       assert:
-        that: 'result.stdout is search("Not shown: 1023 closed ports")'
+        that: 'result.stdout is search("80/tcp\s+closed\s+http")'
+
+    - name: check that HTTPS port of outside host is closed
+      assert:
+        that: 'result.stdout is search("443/tcp\s+closed\s+http")'
 
     - name: scan inside host
-      command: nmap -Pn -n -sS -p1-1024 -TAggressive 192.168.0.10
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 192.168.0.10
       register: result
       changed_when: false
 
-    - name: check that all ports are filtered
+    - name: check that SSH port of inside host is filtered
       assert:
-        that: 'result.stdout is search("All 1024 scanned ports on 192.168.0.10 are filtered")'
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of inside host is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of inside host is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
 
     - name: scan outside interface of gateway
-      command: nmap -Pn -n -sS -p1-1024 -TAggressive 10.0.0.1
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 10.0.0.1
       register: result
       changed_when: false
 
-    - name: check that all ports are filtered
+    - name: check that SSH port of gateway outside interface is filtered
       assert:
-        that: 'result.stdout is search("All 1024 scanned ports on 10.0.0.1 are filtered")'
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of gateway outside interface is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of gateway outside interface is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
 
     - name: scan dmz interface of gateway
-      command: nmap -Pn -n -sS -p1-1024 -TAggressive 172.16.0.1
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 172.16.0.1
       register: result
       changed_when: false
 
-    - name: check that all ports are filtered
+    - name: check that SSH port of gateway dmz interface is filtered
       assert:
-        that: 'result.stdout is search("All 1024 scanned ports on 172.16.0.1 are filtered")'
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of gateway dmz interface is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of gateway dmz interface is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
 
     - name: scan inside interface of gateway
-      command: nmap -Pn -n -sS -p1-1024 -TAggressive 192.168.0.1
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 192.168.0.1
       register: result
       changed_when: false
 
-    - name: check that all ports are filtered
+    - name: check that SSH port of gateway inside interface is filtered
       assert:
-        that: 'result.stdout is search("All 1024 scanned ports on 192.168.0.1 are filtered")'
+        that: 'result.stdout is search("22/tcp\s+filtered\s+ssh")'
+
+    - name: check that HTTP port of gateway inside interface is filtered
+      assert:
+        that: 'result.stdout is search("80/tcp\s+filtered\s+http")'
+
+    - name: check that HTTPS port of gateway inside interface is filtered
+      assert:
+        that: 'result.stdout is search("443/tcp\s+filtered\s+http")'
