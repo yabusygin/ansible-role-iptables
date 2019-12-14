@@ -1,0 +1,15 @@
+---
+ansible_become: yes
+
+networkd:
+  ifaces:
+    - name: eth0
+      network:
+        dhcp: ipv4
+    - name: eth1
+      address: 192.168.0.1/24
+    - name: eth2
+      address: 172.16.0.1/24
+    - name: eth3
+      address: 10.0.0.1/24
+  ip_forwarding: ipv4

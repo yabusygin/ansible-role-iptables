@@ -12,37 +12,31 @@ platforms:
     box: debian/stretch64
     interfaces:
       - network_name: private_network
-        ip: 192.168.0.1
-        netmask: 255.255.255.0
+        auto_config: no
         virtualbox__intnet: test-role-iptables-inside
       - network_name: private_network
-        ip: 172.16.0.1
-        netmask: 255.255.255.0
+        auto_config: no
         virtualbox__intnet: test-role-iptables-dmz
       - network_name: private_network
-        ip: 10.0.0.1
-        netmask: 255.255.255.0
+        auto_config: no
         virtualbox__intnet: test-role-iptables-outside
   - name: inside-host
     box: debian/stretch64
     interfaces:
       - network_name: private_network
-        ip: 192.168.0.10
-        netmask: 255.255.255.0
+        auto_config: no
         virtualbox__intnet: test-role-iptables-inside
   - name: dmz-host
     box: debian/stretch64
     interfaces:
       - network_name: private_network
-        ip: 172.16.0.10
-        netmask: 255.255.255.0
+        auto_config: no
         virtualbox__intnet: test-role-iptables-dmz
   - name: outside-host
     box: debian/stretch64
     interfaces:
       - network_name: private_network
-        ip: 10.0.0.10
-        netmask: 255.255.255.0
+        auto_config: no
         virtualbox__intnet: test-role-iptables-outside
 provisioner:
   name: ansible
