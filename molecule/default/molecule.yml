@@ -8,8 +8,14 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: instance
-    box: ubuntu/xenial64
+  - name: gateway
+    box: debian/stretch64
+  - name: inside-host
+    box: debian/stretch64
+  - name: dmz-host
+    box: debian/stretch64
+  - name: outside-host
+    box: debian/stretch64
 provisioner:
   name: ansible
   lint:
