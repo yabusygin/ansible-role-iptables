@@ -1,0 +1,16 @@
+galaxy_info:
+  role_name: iptables
+  author: Alexey Busygin
+  description: An Ansible role configuring iptables rules.
+  license: MIT
+  min_ansible_version: 2.7
+  platforms:
+  - name: Debian
+    versions:
+    - buster
+    - stretch
+    - jessie
+  - name: Ubuntu
+    versions:
+    - bionic
+    - xenial
