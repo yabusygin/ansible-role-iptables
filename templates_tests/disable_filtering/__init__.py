@@ -1,1 +1,1 @@
-"""Gateway rules."""
+"""Rules with disabled packet filtering."""

@@ -1,1 +1,1 @@
-"""Gateway rules."""
+"""Rules with customized default policy."""
