@@ -80,3 +80,85 @@
     - name: check that all ports are filtered
       assert:
         that: 'result.stdout is search("All 1024 scanned ports on 192.168.0.1 are filtered")'
+
+- name: scan from dmz network
+  hosts: dmz-host
+  tasks:
+    - name: ping outside host
+      command: ping -c 3 10.0.0.10
+      register: result
+      failed_when: result.rc != 0
+      changed_when: false
+
+    - name: scan DMZ host
+      command: nmap -Pn -n -sS -p1-1024 -TAggressive 10.0.0.10
+      register: result
+      changed_when: false
+
+    - name: check that SSH port is open
+      assert:
+        that: 'result.stdout is search("22/tcp\s+open\s+ssh")'
+
+    - name: check that other ports are closed
+      assert:
+        that: 'result.stdout is search("Not shown: 1023 closed ports")'
+
+    - name: ping inside host
+      command: ping -c 3 192.168.0.10
+      register: result
+      failed_when: result.rc == 0
+      changed_when: false
+
+    - name: scan inside host
+      command: nmap -Pn -n -sS -p1-1024 -TAggressive 192.168.0.10
+      register: result
+      changed_when: false
+
+    - name: check that all ports are filtered
+      assert:
+        that: 'result.stdout is search("All 1024 scanned ports on 192.168.0.10 are filtered")'
+
+    - name: ping outside interface of gateway
+      command: ping -c 3 10.0.0.1
+      register: result
+      failed_when: result.rc == 0
+      changed_when: false
+
+    - name: scan outside interface of gateway
+      command: nmap -Pn -n -sS -p1-1024 -TAggressive 10.0.0.1
+      register: result
+      changed_when: false
+
+    - name: check that all ports are filtered
+      assert:
+        that: 'result.stdout is search("All 1024 scanned ports on 10.0.0.1 are filtered")'
+
+    - name: ping dmz interface of gateway
+      command: ping -c 3 172.16.0.1
+      register: result
+      failed_when: result.rc == 0
+      changed_when: false
+
+    - name: scan dmz interface of gateway
+      command: nmap -Pn -n -sS -p1-1024 -TAggressive 172.16.0.1
+      register: result
+      changed_when: false
+
+    - name: check that all ports are filtered
+      assert:
+        that: 'result.stdout is search("All 1024 scanned ports on 172.16.0.1 are filtered")'
+
+    - name: ping inside interface of gateway
+      command: ping -c 3 192.168.0.1
+      register: result
+      failed_when: result.rc == 0
+      changed_when: false
+
+    - name: scan inside interface of gateway
+      command: nmap -Pn -n -sS -p1-1024 -TAggressive 192.168.0.1
+      register: result
+      changed_when: false
+
+    - name: check that all ports are filtered
+      assert:
+        that: 'result.stdout is search("All 1024 scanned ports on 192.168.0.1 are filtered")'
