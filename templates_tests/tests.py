@@ -18,22 +18,6 @@ _ROLE_PATH = relative_to_path(
 _TEMPLATE_FILENAME = "rules.v4.j2"
 
 
-class DefaultRules(unittest.TestCase):
-    """Test default rules."""
-
-    def test(self):
-        """Run test."""
-        expect = resource_str(
-            resource_path=pathlib.Path("default", "rules.v4"),
-            package=__name__,
-        )
-        actual = render_role_template(
-            role_path=_ROLE_PATH,
-            template_filename=_TEMPLATE_FILENAME,
-        )
-        self.assertEqual(expect, actual)
-
-
 class WorkstationtRules(unittest.TestCase):
     """Test workstation rules."""
 
