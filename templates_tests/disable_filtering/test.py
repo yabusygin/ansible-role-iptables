@@ -21,7 +21,7 @@ _ROLE_PATH = resolve_path(
 _TEMPLATE_FILENAME = "rules.v4.j2"
 
 
-class Render(unittest.TestCase):
+class RenderFromTemplate(unittest.TestCase):
     """Test rendering from template."""
 
     def test(self):
