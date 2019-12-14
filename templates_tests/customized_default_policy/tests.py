@@ -2,18 +2,17 @@
 
 import unittest
 import pathlib
+import importlib.resources as resources
 
-from .utils import (
+from ..utils import (
     relative_to_path,
     render_role_template,
-    resource_abs_path,
-    resource_str,
 )
 
 
 _ROLE_PATH = relative_to_path(
     base_path=pathlib.Path(__file__),
-    relative_path=pathlib.Path(".."),
+    relative_path=pathlib.Path("..", ".."),
 )
 _TEMPLATE_FILENAME = "rules.v4.j2"
 
@@ -23,15 +22,12 @@ class CustomizedDefaultPolicies(unittest.TestCase):
 
     def test(self):
         """Run test."""
-        expect = resource_str(
-            resource_path=pathlib.Path("custom-policy", "rules.v4"),
-            package=__name__,
+        expect = resources.read_text(
+            package=__package__,
+            resource="rules.v4",
         )
-        context_manager = resource_abs_path(
-            resource_path=pathlib.Path("custom-policy", "vars.yml"),
-            package=__name__,
-        )
-        with context_manager as variables_path:
+        with resources.path(package=__package__, resource="vars.yml") \
+                as variables_path:
             actual = render_role_template(
                 role_path=_ROLE_PATH,
                 template_filename=_TEMPLATE_FILENAME,
