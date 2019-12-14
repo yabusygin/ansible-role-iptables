@@ -1,4 +1,4 @@
-"""/etc/iptables/rules.* templates tests."""
+"""Test rendering from template."""
 
 import unittest
 import pathlib
@@ -21,8 +21,8 @@ _ROLE_PATH = relative_to_path(
 _TEMPLATE_FILENAME = "rules.v4.j2"
 
 
-class DefaultRules(unittest.TestCase):
-    """Test default rules."""
+class Render(unittest.TestCase):
+    """Test rendering from template."""
 
     def test(self):
         """Run test."""
