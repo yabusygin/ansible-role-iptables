@@ -1,9 +1,24 @@
 ---
 # This is an example playbook to execute Ansible tests.
 
-- name: Verify
-  hosts: all
+- name: scan from outside network
+  hosts: outside-host
   tasks:
-  - name: Example assertion
-    assert:
-      that: true
+    - name: ping DMZ host
+      command: ping -c 3 172.16.0.10
+      register: result
+      failed_when: result.rc == 0
+      changed_when: false
+
+    - name: scan DMZ host
+      command: nmap -Pn -n -sS -p1-1024 -TAggressive 172.16.0.10
+      register: result
+      changed_when: false
+
+    - name: check that HTTP port is closed
+      assert:
+        that: 'result.stdout is search("80/tcp\s+closed\s+http")'
+
+    - name: check that other ports are filtered
+      assert:
+        that: 'result.stdout is search("Not shown: 1023 filtered ports")'
