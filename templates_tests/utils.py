@@ -8,30 +8,28 @@ import ansible.template
 import yaml
 
 
-def relative_to_path(base_path, relative_path):
+def resolve_path(base_path, relative_path):
     """Resolve path relative to base path."""
     if not base_path.is_dir():
         base_path = base_path.parent
     return base_path.joinpath(relative_path).resolve()
 
 
-def render_role_template(role_path, template_filename, variables_path=None):
-    """Render file from Ansible role template."""
-    variables = {}
+def render_role_template(role_path, template_filename, variables=None):
+    """Render content from Ansible role template."""
+    template_variables = {}
     default_variables_path = pathlib.Path(role_path, "defaults", "main.yml")
     if default_variables_path.exists():
-        variables.update(
+        template_variables.update(
             yaml_parse(data=default_variables_path.read_text()),
         )
-    if variables_path is not None:
-        variables.update(
-            yaml_parse(data=variables_path.read_text()),
-        )
+    if variables:
+        template_variables.update(variables)
     env = _make_template_env(
         search_path=pathlib.Path(role_path, "templates"),
     )
     template = env.get_template(name=template_filename)
-    return template.render(**variables)
+    return template.render(**template_variables)
 
 
 def _make_template_env(search_path):

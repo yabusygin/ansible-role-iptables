@@ -1,4 +1,4 @@
-"""/etc/iptables/rules.* templates tests."""
+"""Test rendering from template."""
 
 import unittest
 import pathlib
@@ -8,20 +8,21 @@ except ImportError:
     import importlib_resources as resources
 
 from ..utils import (
-    relative_to_path,
+    resolve_path,
     render_role_template,
+    yaml_parse,
 )
 
 
-_ROLE_PATH = relative_to_path(
+_ROLE_PATH = resolve_path(
     base_path=pathlib.Path(__file__),
     relative_path=pathlib.Path("..", ".."),
 )
 _TEMPLATE_FILENAME = "rules.v4.j2"
 
 
-class DefaultRules(unittest.TestCase):
-    """Test default rules."""
+class RenderFromTemplate(unittest.TestCase):
+    """Test rendering from template."""
 
     def test(self):
         """Run test."""
@@ -29,8 +30,17 @@ class DefaultRules(unittest.TestCase):
             package=__package__,
             resource="rules.v4",
         )
+        variables = None
+        if resources.is_resource(package=__package__, name="vars.yml"):
+            variables = yaml_parse(
+                data=resources.read_text(
+                    package=__package__,
+                    resource="vars.yml",
+                ),
+            )
         actual = render_role_template(
             role_path=_ROLE_PATH,
             template_filename=_TEMPLATE_FILENAME,
+            variables=variables,
         )
         self.assertEqual(expect, actual)
