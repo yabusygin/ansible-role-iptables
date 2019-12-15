@@ -18,7 +18,10 @@ _ROLE_PATH = resolve_path(
     base_path=pathlib.Path(__file__),
     relative_path=pathlib.Path("..", ".."),
 )
+_TEMPLATE_VARIABLES_FILENAME = "vars.yml"
+
 _TEMPLATE_FILENAME = "rules.v4.j2"
+_EXPECTED_RESULT_FILENAME = "rules.v4"
 
 
 class RenderFromTemplate(unittest.TestCase):
@@ -28,14 +31,16 @@ class RenderFromTemplate(unittest.TestCase):
         """Run test."""
         expect = resources.read_text(
             package=__package__,
-            resource="rules.v4",
+            resource=_EXPECTED_RESULT_FILENAME,
         )
         variables = None
-        if resources.is_resource(package=__package__, name="vars.yml"):
+        if resources.is_resource(
+                package=__package__,
+                name=_TEMPLATE_VARIABLES_FILENAME):
             variables = yaml_parse(
                 data=resources.read_text(
                     package=__package__,
-                    resource="vars.yml",
+                    resource=_TEMPLATE_VARIABLES_FILENAME,
                 ),
             )
         actual = render_role_template(
