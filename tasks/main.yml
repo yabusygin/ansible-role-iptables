@@ -24,3 +24,9 @@
     mode: 0600
   notify:
     - enable rules
+
+- name: enable netfilter-persistent
+  systemd:
+    name: netfilter-persistent.service
+    state: started
+    enabled: yes
