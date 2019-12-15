@@ -1,11 +1,11 @@
 ---
 iptables:
   filter:
-  - chain: INPUT
-    default_policy: ACCEPT
+    - chain: INPUT
+      default_policy: ACCEPT
 
-  - chain: FORWARD
-    default_policy: ACCEPT
+    - chain: FORWARD
+      default_policy: ACCEPT
 
-  - chain: OUTPUT
-    default_policy: DROP
+    - chain: OUTPUT
+      default_policy: DROP
