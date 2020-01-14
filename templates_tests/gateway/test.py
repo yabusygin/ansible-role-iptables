@@ -1,5 +1,3 @@
-"""Test rendering from template."""
-
 import unittest
 import pathlib
 try:
@@ -25,10 +23,8 @@ _EXPECTED_RESULT_FILENAME = "rules.v4"
 
 
 class RenderFromTemplate(unittest.TestCase):
-    """Test rendering from template."""
 
     def test(self):
-        """Run test."""
         expect = resources.read_text(
             package=__package__,
             resource=_EXPECTED_RESULT_FILENAME,
