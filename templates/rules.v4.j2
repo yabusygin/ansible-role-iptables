@@ -18,7 +18,9 @@
 
             {% for rule in chain.rules|default([]) %}
                 {% if "shortcut" in rule %}
-                    {% if rule.shortcut == "accept_loopback" %}
+                    {% if rule.shortcut == "accept_established" %}
+{{ shortcuts.accept_established(chain=chain.chain) }}
+                    {% elif rule.shortcut == "accept_loopback" %}
 {{ shortcuts.accept_loopback(chain=chain.chain) }}
                     {% endif %}
                 {% elif "rule" in rule %}

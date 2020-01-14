@@ -1,3 +1,7 @@
+{% macro accept_established(chain) -%}
+--append {{ chain }} --match conntrack --ctstate RELATED,ESTABLISHED --jump ACCEPT
+{%- endmacro %}
+
 {% macro accept_loopback(chain) -%}
 --append {{ chain }} --in-interface lo --jump ACCEPT
 {%- endmacro %}
