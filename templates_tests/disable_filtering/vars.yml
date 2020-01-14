@@ -1,4 +1,0 @@
----
-iptables_filter_input_policy: ACCEPT
-iptables_filter_forward_policy: ACCEPT
-iptables_filter_input_before_rules: []

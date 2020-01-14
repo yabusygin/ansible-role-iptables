@@ -1,13 +1,32 @@
 ---
-iptables:
-  filter:
-    - chain: INPUT
-      rules:
-        - options:
-            protocol: udp
-            match: udp
-            source_port: 67
-            destination_port: 68
-            jump: ACCEPT
-        - options:
-            jump: DROP
+iptables_ipv4:
+  - table: filter
+    chains:
+      - chain: INPUT
+        default_policy: DROP
+        rules:
+          - rule: # shortcut: accept_loopback
+              in_interface: lo
+              jump: ACCEPT
+          - rule: # shortcut: accept_established
+              match: conntrack
+              ctstate:
+                - RELATED
+                - ESTABLISHED
+              jump: ACCEPT
+          - rule: # shortcut: drop_invalid
+              match: conntrack
+              ctstate: INVALID
+              jump: DROP
+          - rule:
+              protocol: udp
+              match: udp
+              source_port: 67
+              destination_port: 68
+              jump: ACCEPT
+          - rule:
+              jump: DROP
+      - chain: FORWARD
+        default_policy: DROP
+      - chain: OUTPUT
+        default_policy: ACCEPT

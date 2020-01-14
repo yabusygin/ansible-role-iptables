@@ -1,96 +1,123 @@
 ---
-iptables:
-  filter:
-    - chain: INPUT
-      rules:
-        - options:
-            in_interface: eth0
-            jump: I_MGMT
+iptables_ipv4:
+  - table: filter
+    chains:
+      - chain: INPUT
+        default_policy: DROP
+        rules:
+          - rule: # shortcut: accept_loopback
+              in_interface: lo
+              jump: ACCEPT
+          - rule: # shortcut: accept_established
+              match: conntrack
+              ctstate:
+                - RELATED
+                - ESTABLISHED
+              jump: ACCEPT
+          - rule: # shortcut: drop_invalid
+              match: conntrack
+              ctstate: INVALID
+              jump: DROP
+          - rule:
+              in_interface: eth0
+              jump: I_MGMT
 
-    - chain: FORWARD
-      rules:
-        - options:
-            in_interface: eth0
-            out_interface: eth0
-            jump: ACCEPT
-        - options:
-            in_interface: eth1
-            out_interface: eth1
-            jump: ACCEPT
-        - options:
-            in_interface: eth2
-            out_interface: eth2
-            jump: ACCEPT
-        - options:
-            in_interface: eth3
-            out_interface: eth3
-            jump: ACCEPT
-        - options:
-            in_interface: eth1
-            out_interface: eth2
-            jump: F_PRIVATE_TO_DMZ
-        - options:
-            in_interface: eth1
-            out_interface: eth3
-            jump: F_PRIVATE_TO_PUBLIC
-        - options:
-            in_interface: eth2
-            out_interface: eth3
-            jump: F_DMZ_TO_PUBLIC
-        - options:
-            in_interface: eth3
-            out_interface: eth2
-            jump: F_PUBLIC_TO_DMZ
+      - chain: FORWARD
+        default_policy: DROP
+        rules:
+          - rule: # shortcut: accept_established
+              match: conntrack
+              ctstate:
+                - RELATED
+                - ESTABLISHED
+              jump: ACCEPT
+          - rule: # shortcut: drop_invalid
+              match: conntrack
+              ctstate: INVALID
+              jump: DROP
+          - rule:
+              in_interface: eth0
+              out_interface: eth0
+              jump: ACCEPT
+          - rule:
+              in_interface: eth1
+              out_interface: eth1
+              jump: ACCEPT
+          - rule:
+              in_interface: eth2
+              out_interface: eth2
+              jump: ACCEPT
+          - rule:
+              in_interface: eth3
+              out_interface: eth3
+              jump: ACCEPT
+          - rule:
+              in_interface: eth1
+              out_interface: eth2
+              jump: F_PRIVATE_TO_DMZ
+          - rule:
+              in_interface: eth1
+              out_interface: eth3
+              jump: F_PRIVATE_TO_PUBLIC
+          - rule:
+              in_interface: eth2
+              out_interface: eth3
+              jump: F_DMZ_TO_PUBLIC
+          - rule:
+              in_interface: eth3
+              out_interface: eth2
+              jump: F_PUBLIC_TO_DMZ
 
-    - chain: OUTPUT
-      rules:
-        - options:
-            destination: 10.10.10.10
-            jump: DROP
+      - chain: OUTPUT
+        default_policy: ACCEPT
+        rules:
+          - rule:
+              destination: 10.10.10.10
+              jump: DROP
 
-    - chain: I_MGMT
-      rules:
-        - options:
-            protocol: tcp
-            destination_port: 22
-            jump: ACCEPT
-        - options:
-            jump: DROP
+      - chain: I_MGMT
+        rules:
+          - rule:
+              protocol: tcp
+              destination_port: 22
+              jump: ACCEPT
+          - rule:
+              jump: DROP
 
-    - chain: F_PRIVATE_TO_DMZ
-      rules:
-        - options:
-            not_source: 192.168.0.0/28
-            jump: ACCEPT
-        - options:
-            jump: DROP
+      - chain: F_PRIVATE_TO_DMZ
+        rules:
+          - rule:
+              not_source: 192.168.0.0/28
+              jump: ACCEPT
+          - rule:
+              jump: DROP
 
-    - chain: F_PRIVATE_TO_PUBLIC
-      rules:
-        - options:
-            not_source: 192.168.0.0/28
-            jump: ACCEPT
-        - options:
-            jump: DROP
+      - chain: F_PRIVATE_TO_PUBLIC
+        rules:
+          - rule:
+              not_source: 192.168.0.0/28
+              jump: ACCEPT
+          - rule:
+              jump: DROP
 
-    - chain: F_DMZ_TO_PUBLIC
-      rules:
-        - options:
-            jump: ACCEPT
-        - options:
-            jump: DROP
+      - chain: F_DMZ_TO_PUBLIC
+        rules:
+          - rule:
+              jump: ACCEPT
+          - rule:
+              jump: DROP
 
-    - chain: F_PUBLIC_TO_DMZ
-      rules:
-        - options:
-            destination: 172.16.0.10
-            protocol: tcp
-            destination_port: 80
-            jump: ACCEPT
-        - options:
-            destination: 172.16.0.10
-            protocol: tcp
-            destination_port: 443
-            jump: ACCEPT
-        - options:
-            jump: DROP
+      - chain: F_PUBLIC_TO_DMZ
+        rules:
+          - rule:
+              destination: 172.16.0.10
+              protocol: tcp
+              destination_port: 80
+              jump: ACCEPT
+          - rule:
+              destination: 172.16.0.10
+              protocol: tcp
+              destination_port: 443
+              jump: ACCEPT
+          - rule:
+              jump: DROP
