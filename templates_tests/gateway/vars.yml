@@ -5,9 +5,7 @@ iptables_ipv4:
       - chain: INPUT
         default_policy: DROP
         rules:
-          - rule: # shortcut: accept_loopback
-              in_interface: lo
-              jump: ACCEPT
+          - shortcut: accept_loopback
           - rule: # shortcut: accept_established
               match: conntrack
               ctstate:

@@ -1,4 +1,5 @@
 {% import "macro.j2" as macro -%}
+{% import "shortcuts.j2" as shortcuts -%}
 
 {% for table in iptables_ipv4 %}
     {% if not loop.first %}
@@ -17,7 +18,9 @@
 
             {% for rule in chain.rules|default([]) %}
                 {% if "shortcut" in rule %}
-                    {# TODO #}
+                    {% if rule.shortcut == "accept_loopback" %}
+{{ shortcuts.accept_loopback(chain=chain.chain) }}
+                    {% endif %}
                 {% elif "rule" in rule %}
 {{ macro.rule(chain=chain.chain, options=rule.rule) }}
                 {% endif %}

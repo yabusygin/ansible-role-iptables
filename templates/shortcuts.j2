@@ -1,0 +1,3 @@
+{% macro accept_loopback(chain) -%}
+--append {{ chain }} --in-interface lo --jump ACCEPT
+{%- endmacro %}
