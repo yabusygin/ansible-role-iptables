@@ -7,10 +7,7 @@ iptables_ipv4:
         rules:
           - shortcut: accept_loopback
           - shortcut: accept_established
-          - rule: # shortcut: drop_invalid
-              match: conntrack
-              ctstate: INVALID
-              jump: DROP
+          - shortcut: drop_invalid
           - rule:
               protocol: udp
               match: udp

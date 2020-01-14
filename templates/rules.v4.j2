@@ -22,6 +22,8 @@
 {{ shortcuts.accept_established(chain=chain.chain) }}
                     {% elif rule.shortcut == "accept_loopback" %}
 {{ shortcuts.accept_loopback(chain=chain.chain) }}
+                    {% elif rule.shortcut == "drop_invalid" %}
+{{ shortcuts.drop_invalid(chain=chain.chain) }}
                     {% endif %}
                 {% elif "rule" in rule %}
 {{ macro.rule(chain=chain.chain, options=rule.rule) }}
