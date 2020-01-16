@@ -42,3 +42,14 @@
 --append F_PUBLIC_TO_DMZ --destination 172.16.0.10 --protocol tcp --destination-port 443 --jump ACCEPT
 --append F_PUBLIC_TO_DMZ --jump DROP
 COMMIT
+
+*nat
+:INPUT ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+:PREROUTING ACCEPT [0:0]
+
+--append POSTROUTING --out-interface eth3 --source 192.168.0.0/24,172.16.0.0/24 --jump SNAT --to-source 10.0.0.2
+
+--append PREROUTING --destination 10.0.0.10 --jump DNAT --to-destination 172.16.0.10
+COMMIT

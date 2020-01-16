@@ -11,7 +11,6 @@ iptables_ipv4:
           - rule:
               in_interface: eth0
               jump: I_MGMT
-
       - chain: FORWARD
         default_policy: DROP
         rules:
@@ -49,14 +48,12 @@ iptables_ipv4:
               in_interface: eth3
               out_interface: eth2
               jump: F_PUBLIC_TO_DMZ
-
       - chain: OUTPUT
         default_policy: ACCEPT
         rules:
           - rule:
               destination: 10.10.10.10
               jump: DROP
-
       - chain: I_MGMT
         rules:
           - rule:
@@ -65,7 +62,6 @@ iptables_ipv4:
               jump: ACCEPT
           - rule:
               jump: DROP
-
       - chain: F_PRIVATE_TO_DMZ
         rules:
           - rule:
@@ -73,7 +69,6 @@ iptables_ipv4:
               jump: ACCEPT
           - rule:
               jump: DROP
-
       - chain: F_PRIVATE_TO_PUBLIC
         rules:
           - rule:
@@ -81,14 +76,12 @@ iptables_ipv4:
               jump: ACCEPT
           - rule:
               jump: DROP
-
       - chain: F_DMZ_TO_PUBLIC
         rules:
           - rule:
               jump: ACCEPT
           - rule:
               jump: DROP
-
       - chain: F_PUBLIC_TO_DMZ
         rules:
           - rule:
@@ -103,3 +96,26 @@ iptables_ipv4:
               jump: ACCEPT
           - rule:
               jump: DROP
+  - table: nat
+    chains:
+      - chain: INPUT
+        default_policy: ACCEPT
+      - chain: OUTPUT
+        default_policy: ACCEPT
+      - chain: POSTROUTING
+        default_policy: ACCEPT
+        rules:
+          - rule:
+              out_interface: eth3
+              source:
+                - 192.168.0.0/24
+                - 172.16.0.0/24
+              jump: SNAT
+              to_source: 10.0.0.2
+      - chain: PREROUTING
+        default_policy: ACCEPT
+        rules:
+          - rule:
+              destination: 10.0.0.10
+              jump: DNAT
+              to_destination: 172.16.0.10
