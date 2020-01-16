@@ -11,16 +11,16 @@ iptables_builtin_chains:
     - POSTROUTING
   mangle:
     - PREROUTING
-    - OUTPUT
     - INPUT
     - FORWARD
+    - OUTPUT
     - POSTROUTING
   raw:
     - PREROUTING
     - OUTPUT
   security:
     - INPUT
-    - OUTPUT
     - FORWARD
+    - OUTPUT
 
 iptables_ipv4: []
