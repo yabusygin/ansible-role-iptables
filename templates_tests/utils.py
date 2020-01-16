@@ -14,10 +14,15 @@ def resolve_path(base_path, relative_path):
 
 def render_role_template(role_path, template_filename, variables=None):
     template_variables = {}
-    default_variables_path = pathlib.Path(role_path, "defaults", "main.yml")
-    if default_variables_path.exists():
+    defaults_variables_path = pathlib.Path(role_path, "defaults", "main.yml")
+    if defaults_variables_path.exists():
         template_variables.update(
-            yaml_parse(data=default_variables_path.read_text()),
+            yaml_parse(data=defaults_variables_path.read_text()),
+        )
+    vars_variables_path = pathlib.Path(role_path, "vars", "main.yml")
+    if vars_variables_path.exists():
+        template_variables.update(
+            yaml_parse(data=vars_variables_path.read_text()),
         )
     if variables:
         template_variables.update(variables)

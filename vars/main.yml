@@ -1,0 +1,24 @@
+---
+iptables_builtin_chains:
+  filter:
+    - INPUT
+    - FORWARD
+    - OUTPUT
+  nat:
+    - PREROUTING
+    - INPUT
+    - OUTPUT
+    - POSTROUTING
+  mangle:
+    - PREROUTING
+    - INPUT
+    - FORWARD
+    - OUTPUT
+    - POSTROUTING
+  raw:
+    - PREROUTING
+    - OUTPUT
+  security:
+    - INPUT
+    - FORWARD
+    - OUTPUT
