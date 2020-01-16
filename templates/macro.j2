@@ -1,9 +1,3 @@
-{% macro rule_group(chain, rules) %}
-    {% for rule in rules %}
-{{ macros.rule("INPUT", rule.options) }}
-    {% endfor %}
-{% endmacro %}
-
 {% macro rule(chain, options) -%}
     --append {{ chain }}
     {%- for keyword in options -%}

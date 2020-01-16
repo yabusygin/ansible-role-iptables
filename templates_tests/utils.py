@@ -1,5 +1,3 @@
-"""Utilities."""
-
 import pathlib
 
 import jinja2
@@ -9,19 +7,22 @@ import yaml
 
 
 def resolve_path(base_path, relative_path):
-    """Resolve path relative to base path."""
     if not base_path.is_dir():
         base_path = base_path.parent
     return base_path.joinpath(relative_path).resolve()
 
 
 def render_role_template(role_path, template_filename, variables=None):
-    """Render content from Ansible role template."""
     template_variables = {}
-    default_variables_path = pathlib.Path(role_path, "defaults", "main.yml")
-    if default_variables_path.exists():
+    defaults_variables_path = pathlib.Path(role_path, "defaults", "main.yml")
+    if defaults_variables_path.exists():
         template_variables.update(
-            yaml_parse(data=default_variables_path.read_text()),
+            yaml_parse(data=defaults_variables_path.read_text()),
+        )
+    vars_variables_path = pathlib.Path(role_path, "vars", "main.yml")
+    if vars_variables_path.exists():
+        template_variables.update(
+            yaml_parse(data=vars_variables_path.read_text()),
         )
     if variables:
         template_variables.update(variables)
@@ -47,7 +48,6 @@ def _make_template_env(search_path):
 
 
 def yaml_parse(data):
-    """Parse YAML data."""
     return yaml.load(
         stream=data,
         Loader=yaml.Loader

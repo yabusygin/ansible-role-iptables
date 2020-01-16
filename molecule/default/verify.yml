@@ -3,7 +3,7 @@
   hosts: outside-host
   tasks:
     - name: scan DMZ host
-      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 172.16.0.10
+      command: nmap -Pn -n -sS -p22,80,443 -TAggressive 10.0.0.3
       register: result
       changed_when: false
 

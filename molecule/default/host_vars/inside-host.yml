@@ -14,13 +14,20 @@ networkd:
         - dest: 172.16.0.0/24
           next_hop: 192.168.0.1
 
-iptables:
-  filter:
-    - chain: INPUT
-      rules:
-        - options:
-            in_interface: eth0
-            protocol: tcp
-            match: tcp
-            destination_port: 22
-            jump: ACCEPT
+iptables_ipv4:
+  - table: filter
+    chains:
+      - chain: INPUT
+        default_policy: DROP
+        rules:
+          - shortcut: accept_loopback
+          - shortcut: accept_established
+          - shortcut: drop_invalid
+          - rule:
+              in_interface: eth0
+              protocol: tcp
+              match: tcp
+              destination_port: 22
+              jump: ACCEPT
+      - chain: FORWARD
+        default_policy: DROP

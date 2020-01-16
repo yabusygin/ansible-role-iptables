@@ -1,40 +1,43 @@
-{% extends "tables.j2" %}
-{% import "macro.j2" as macros -%}
+{% import "macro.j2" as macro -%}
+{% import "shortcuts.j2" as shortcuts -%}
 
-{% block filter_rules %}
-    {% if iptables_filter_input_before_rules or iptables_filter_input_rules %}
+{% if iptables_ipv4 is defined %}
+    {% for table in iptables_ipv4 %}
+        {% if not loop.first %}
 
-        {% for rule in iptables_filter_input_before_rules %}
-{{ macros.rule("INPUT", rule.options) }}
-        {% endfor %}
-        {% for rule in iptables_filter_input_rules %}
-{{ macros.rule("INPUT", rule.options) }}
-        {% endfor %}
-    {% endif %}
-    {% if iptables_filter_forward_rules %}
-
-        {% for rule in iptables_filter_forward_before_rules %}
-{{ macros.rule("FORWARD", rule.options) }}
-        {% endfor %}
-        {% for rule in iptables_filter_forward_rules %}
-{{ macros.rule("FORWARD", rule.options) }}
-        {% endfor %}
-    {% endif %}
-    {% if iptables_filter_output_rules %}
-
-        {% for rule in iptables_filter_output_before_rules %}
-{{ macros.rule("OUTPUT", rule.options) }}
-        {% endfor %}
-        {% for rule in iptables_filter_output_rules %}
-{{ macros.rule("OUTPUT", rule.options) }}
-        {% endfor %}
-    {% endif %}
-    {% for chain in iptables_filter_user_chains %}
-        {% if "rules" in chain %}
-
-            {% for rule in chain.rules %}
-{{ macros.rule(chain.chain, rule.options) }}
-            {% endfor %}
         {% endif %}
+*{{ table.table }}
+        {% for chain in iptables_builtin_chains[table.table] %}
+            {% set match = table.chains|selectattr("chain", "eq", chain)|list %}
+            {% if match and match[0].default_policy is defined %}
+:{{ chain }} {{ match[0].default_policy }} [0:0]
+            {% else %}
+:{{ chain }} ACCEPT [0:0]
+            {% endif %}
+        {% endfor %}
+        {% for chain in table.chains %}
+            {% if chain.chain not in iptables_builtin_chains[table.table] %}
+:{{ chain.chain }} - [0:0]
+            {% endif %}
+        {% endfor %}
+        {% for chain in table.chains %}
+            {% if chain.rules is defined and chain.rules %}
+
+                {% for rule in chain.rules|default([]) %}
+                    {% if "shortcut" in rule %}
+                        {% if rule.shortcut == "accept_established" %}
+{{ shortcuts.accept_established(chain=chain.chain) }}
+                        {% elif rule.shortcut == "accept_loopback" %}
+{{ shortcuts.accept_loopback(chain=chain.chain) }}
+                        {% elif rule.shortcut == "drop_invalid" %}
+{{ shortcuts.drop_invalid(chain=chain.chain) }}
+                        {% endif %}
+                    {% elif "rule" in rule %}
+{{ macro.rule(chain=chain.chain, options=rule.rule) }}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+COMMIT
     {% endfor %}
-{% endblock filter_rules %}
+{% endif %}
