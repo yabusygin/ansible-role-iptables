@@ -22,3 +22,5 @@ iptables_builtin_chains:
     - INPUT
     - OUTPUT
     - FORWARD
+
+iptables_ipv4: []
