@@ -44,10 +44,10 @@
 COMMIT
 
 *nat
+:PREROUTING ACCEPT [0:0]
 :INPUT ACCEPT [0:0]
 :OUTPUT ACCEPT [0:0]
 :POSTROUTING ACCEPT [0:0]
-:PREROUTING ACCEPT [0:0]
 
 --append POSTROUTING --out-interface eth3 --source 192.168.0.0/24,172.16.0.0/24 --jump SNAT --to-source 10.0.0.2
 

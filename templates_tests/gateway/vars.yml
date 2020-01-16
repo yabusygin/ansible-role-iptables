@@ -49,7 +49,6 @@ iptables_ipv4:
               out_interface: eth2
               jump: F_PUBLIC_TO_DMZ
       - chain: OUTPUT
-        default_policy: ACCEPT
         rules:
           - rule:
               destination: 10.10.10.10
@@ -98,12 +97,7 @@ iptables_ipv4:
               jump: DROP
   - table: nat
     chains:
-      - chain: INPUT
-        default_policy: ACCEPT
-      - chain: OUTPUT
-        default_policy: ACCEPT
       - chain: POSTROUTING
-        default_policy: ACCEPT
         rules:
           - rule:
               out_interface: eth3
@@ -113,7 +107,6 @@ iptables_ipv4:
               jump: SNAT
               to_source: 10.0.0.2
       - chain: PREROUTING
-        default_policy: ACCEPT
         rules:
           - rule:
               destination: 10.0.0.10

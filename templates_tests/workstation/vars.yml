@@ -18,5 +18,3 @@ iptables_ipv4:
               jump: DROP
       - chain: FORWARD
         default_policy: DROP
-      - chain: OUTPUT
-        default_policy: ACCEPT

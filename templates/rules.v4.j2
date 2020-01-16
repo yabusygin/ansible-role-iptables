@@ -6,10 +6,16 @@
 
     {% endif %}
 *{{ table.table }}
-    {% for chain in table.chains %}
-        {% if chain.chain in iptables_builtin_chains[table.table] %}
-:{{ chain.chain }} {{ chain.default_policy }} [0:0]
+    {% for chain in iptables_builtin_chains[table.table] %}
+        {% set match = table.chains|selectattr("chain", "eq", chain)|list %}
+        {% if match and match[0].default_policy is defined %}
+:{{ chain }} {{ match[0].default_policy }} [0:0]
         {% else %}
+:{{ chain }} ACCEPT [0:0]
+        {% endif %}
+    {% endfor %}
+    {% for chain in table.chains %}
+        {% if chain.chain not in iptables_builtin_chains[table.table] %}
 :{{ chain.chain }} - [0:0]
         {% endif %}
     {% endfor %}

@@ -29,7 +29,5 @@ iptables_ipv4:
               match: tcp
               destination_port: 22
               jump: ACCEPT
-      - chain: OUTPUT
-        default_policy: ACCEPT
       - chain: FORWARD
         default_policy: DROP
