@@ -19,8 +19,6 @@ iptables_builtin_chains:
     - PREROUTING
     - OUTPUT
   security:
-    - SECMARK
-    - CONNSECMARK
     - INPUT
     - OUTPUT
     - FORWARD
