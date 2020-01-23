@@ -4,6 +4,9 @@ dist: bionic
 language: python
 python:
   - "3.6"
+apt:
+  packages:
+    - virtualbox
 install:
   - pip install --requirement requirements.txt
 script:
