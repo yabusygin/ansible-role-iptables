@@ -19,4 +19,4 @@ before_script:
   - cd iptables
 script:
   - python -m unittest discover --verbose
-  - molecule test --all || cat /home/travis/.cache/molecule/iptables/default/vagrant-gateway.err
+  - molecule test --all || cat /home/travis/.cache/molecule/iptables/default/vagrant-gateway.err && sudo journalctl --no-pager -u virtualbox.service
