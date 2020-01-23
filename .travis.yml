@@ -4,10 +4,9 @@ dist: bionic
 language: python
 python:
   - "3.6"
-addons:
-  apt:
-    packages:
-      - virtualbox
+before_install:
+  - sudo apt-get update
+  - "sudo apt-get --yes install linux-headers-$(uname -r) dkms virtualbox"
 install:
   - pip install --requirement requirements.txt
   - wget https://releases.hashicorp.com/vagrant/2.2.6/vagrant_2.2.6_x86_64.deb
