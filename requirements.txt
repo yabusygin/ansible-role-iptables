@@ -2,3 +2,4 @@ ansible
 Jinja2
 PyYAML
 importlib_resources
+molecule[vagrant]
