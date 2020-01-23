@@ -1,0 +1,5 @@
+{% import "macro.j2" as macro with context -%}
+
+{% if iptables_ipv6 is defined %}
+{{ macro.rules(iptables_ipv6).strip() }}
+{% endif %}

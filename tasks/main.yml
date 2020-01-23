@@ -13,7 +13,7 @@
     group: root
     mode: 0700
 
-- name: upload rules
+- name: upload IPv4 rules
   template:
     src: rules.v4.j2
     dest: /etc/iptables/rules.v4
@@ -23,7 +23,19 @@
     group: root
     mode: 0600
   notify:
-    - enable rules
+    - enable IPv4 rules
+
+- name: upload IPv6 rules
+  template:
+    src: rules.v6.j2
+    dest: /etc/iptables/rules.v6
+    lstrip_blocks: yes
+    trim_blocks: yes
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - enable IPv6 rules
 
 - name: enable netfilter-persistent
   systemd:
