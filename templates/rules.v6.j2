@@ -1,0 +1,3 @@
+{% import "macro.j2" as macro with context -%}
+
+{{ macro.rules(iptables_ipv6).strip() }}
