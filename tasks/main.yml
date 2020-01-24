@@ -4,6 +4,7 @@
     name: iptables-persistent
     state: present
     force_apt_get: yes
+    update_cache: yes
 
 - name: create iptables config directory
   file:
