@@ -1,0 +1,7 @@
+---
+- name: converge
+  hosts: instance
+  tasks:
+    - name: configure firewall
+      ansible.builtin.import_role:
+        name: iptables
