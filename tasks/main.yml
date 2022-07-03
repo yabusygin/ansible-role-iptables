@@ -17,7 +17,7 @@
 
 - name: set IPv4 rules
   ansible.builtin.copy:
-    src: rules.v4
+    src: "{{ iptables_rules_ipv4 }}"
     dest: /etc/iptables/rules.v4
     mode: u=rw,g=,o=
   notify:
@@ -25,7 +25,7 @@
 
 - name: set IPv6 rules
   ansible.builtin.copy:
-    src: rules.v6
+    src: "{{ iptables_rules_ipv6 }}"
     dest: /etc/iptables/rules.v6
     mode: u=rw,g=,o=
   notify:

@@ -12,7 +12,9 @@ None.
 Role Variables
 --------------
 
-None.
+`iptables_rules_ipv4` and `iptables_rules_ipv6` variables specify path to custom
+rule dumps (IPv4 and IPv6 respectively). Rule dump format corresponds to
+`iptables-save` (`ip6tables-save`) output.
 
 Dependencies
 ------------
@@ -30,6 +32,9 @@ Example Playbook
     - name: configure firewall
       ansible.builtin.import_role:
         name: iptables
+      vars:
+        iptables_rules_ipv4: config/iptables.ipv4.rules
+        iptables_rules_ipv6: config/iptables.ipv6.rules
 ```
 
 License

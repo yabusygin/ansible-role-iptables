@@ -1,0 +1,14 @@
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+
+--append=INPUT --in-interface=lo --jump=ACCEPT
+
+--append=INPUT --match=conntrack --ctstate=RELATED,ESTABLISHED --jump=ACCEPT
+--append=INPUT --match=conntrack --ctstate=INVALID --jump=DROP
+
+--append=INPUT --protocol=udp --match=udp --source-port=67 --destination-port=68 --jump=ACCEPT
+--append=INPUT --protocol=tcp --match=tcp --destination-port=22 --jump=ACCEPT
+
+COMMIT
