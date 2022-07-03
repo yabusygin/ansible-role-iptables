@@ -1,0 +1,4 @@
+ansible>=5.0,<6.0
+
+molecule[docker]>=4.0,<4.1
+ansible-lint>=6.3,<6.4
