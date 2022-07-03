@@ -1,0 +1,38 @@
+---
+- name: install iptables-persistent
+  ansible.builtin.apt:
+    name:
+      - iptables-persistent
+    state: present
+    force_apt_get: yes
+    update_cache: yes
+
+- name: create configuration directory
+  ansible.builtin.file:
+    path: /etc/iptables
+    state: directory
+    owner: root
+    group: root
+    mode: u=rwx,g=,o=
+
+- name: set IPv4 rules
+  ansible.builtin.copy:
+    src: rules.v4
+    dest: /etc/iptables/rules.v4
+    mode: u=rw,g=,o=
+  notify:
+    - load IPv4 rules
+
+- name: set IPv6 rules
+  ansible.builtin.copy:
+    src: rules.v6
+    dest: /etc/iptables/rules.v6
+    mode: u=rw,g=,o=
+  notify:
+    - load IPv6 rules
+
+- name: enable netfilter-persistent
+  ansible.builtin.systemd:
+    name: netfilter-persistent.service
+    state: started
+    enabled: yes
