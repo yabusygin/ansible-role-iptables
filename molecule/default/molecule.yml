@@ -6,7 +6,7 @@ driver:
 lint: ./lint.sh
 platforms:
   - name: instance
-    image: geerlingguy/docker-debian11-ansible:latest
+    image: ${TEST_IMAGE}
     pre_build_image: true
     privileged: true
     command: ""
