@@ -26,10 +26,10 @@ Example Playbook
 
 ```yaml
 ---
-- name: example playbook
+- name: Example playbook
   hosts: server
   tasks:
-    - name: configure firewall
+    - name: Configure firewall
       ansible.builtin.import_role:
         name: iptables
       vars:
