@@ -1,6 +1,7 @@
 #!/bin/sh
 
-platforms="geerlingguy/docker-debian11-ansible:latest"
+platforms="geerlingguy/docker-debian11-ansible:latest \
+           geerlingguy/docker-ubuntu2204-ansible:latest"
 
 for image in ${platforms}; do
     echo "Running Molecule tests for '${image}'..."
