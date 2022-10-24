@@ -1,0 +1,16 @@
+---
+galaxy_info:
+  role_name: iptables
+  namespace: yabusygin
+  author: Alexey Busygin
+  description: An Ansible role that configures persistent iptables rules.
+  license: MIT
+  min_ansible_version: "2.10"
+  platforms:
+    - name: Debian
+      versions:
+        - bullseye
+  galaxy_tags:
+    - system
+    - networking
+    - iptables
