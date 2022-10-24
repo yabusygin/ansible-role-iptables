@@ -1,18 +1,18 @@
 ---
-- name: verify
+- name: Verify
   hosts: instance
   gather_facts: no
   tasks:
-    - name: list IPv4 rules
+    - name: List IPv4 rules
       ansible.builtin.command: iptables --list-rules
       changed_when: no
       register: _result
 
-    - name: check number of IPv4 rules
+    - name: Check number of IPv4 rules
       ansible.builtin.assert:
         that: _result.stdout_lines|length == 8
 
-    - name: check IPv4 rules
+    - name: Check IPv4 rules
       ansible.builtin.assert:
         that: _result.stdout_lines[i] == _expect[i]
       loop: "{{ range(0, _result.stdout_lines|length)|list }}"
