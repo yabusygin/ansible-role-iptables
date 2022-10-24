@@ -10,12 +10,12 @@
 
     - name: Check number of IPv4 rules
       ansible.builtin.assert:
-        that: _result.stdout_lines|length == 8
+        that: _result.stdout_lines | length == 8
 
     - name: Check IPv4 rules
       ansible.builtin.assert:
         that: _result.stdout_lines[i] == _expect[i]
-      loop: "{{ range(0, _result.stdout_lines|length)|list }}"
+      loop: "{{ range(0, _result.stdout_lines | length) | list }}"
       loop_control:
         loop_var: i
       vars:
