@@ -31,7 +31,7 @@ Example Playbook
   tasks:
     - name: Configure firewall
       ansible.builtin.import_role:
-        name: iptables
+        name: yabusygin.iptables
       vars:
         iptables_rules_ipv4: config/iptables.ipv4.rules
         iptables_rules_ipv6: config/iptables.ipv6.rules
