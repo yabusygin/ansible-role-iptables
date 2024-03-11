@@ -13,8 +13,6 @@ platforms:
     keep_volumes: false
 provisioner:
   name: ansible
-  playbooks:
-    converge: ../default/converge.yml
   inventory:
     host_vars:
       instance:
