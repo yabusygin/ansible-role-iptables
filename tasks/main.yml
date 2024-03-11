@@ -31,8 +31,8 @@
   notify:
     - Load IPv6 rules
 
-#- name: Enable netfilter-persistent
-#  ansible.builtin.systemd:
-#    name: netfilter-persistent.service
-#    state: started
-#    enabled: yes
+- name: Enable netfilter-persistent
+  ansible.builtin.systemd:
+    name: netfilter-persistent.service
+    state: started
+    enabled: yes
