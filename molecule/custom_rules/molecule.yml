@@ -1,19 +1,16 @@
 ---
-dependency:
-  name: galaxy
 driver:
   name: docker
-lint: ./lint.sh
 platforms:
   - name: instance
     image: ${TEST_IMAGE}
     pre_build_image: true
     privileged: true
-    command: ""
+    cgroupns_mode: host
     volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - /sys/fs/cgroup:/sys/fs/cgroup:rw
     keep_volumes: false
 provisioner:
   name: ansible
-verifier:
-  name: ansible
+  playbooks:
+    converge: ../default/converge.yml

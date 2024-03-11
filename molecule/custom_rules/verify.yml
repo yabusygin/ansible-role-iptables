@@ -1,11 +1,11 @@
 ---
 - name: Verify
   hosts: instance
-  gather_facts: no
+  gather_facts: false
   tasks:
     - name: List IPv4 rules
       ansible.builtin.command: iptables --list-rules
-      changed_when: no
+      changed_when: false
       register: _result
 
     - name: Check number of IPv4 rules

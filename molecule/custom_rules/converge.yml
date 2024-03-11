@@ -1,7 +1,0 @@
----
-- name: Converge
-  hosts: instance
-  tasks:
-    - name: Configure firewall
-      ansible.builtin.import_role:
-        name: yabusygin.iptables
