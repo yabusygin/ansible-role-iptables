@@ -1,9 +1,6 @@
 ---
-dependency:
-  name: galaxy
 driver:
   name: docker
-lint: ./lint.sh
 platforms:
   - name: instance
     image: ${TEST_IMAGE}
@@ -13,7 +10,3 @@ platforms:
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     keep_volumes: false
-provisioner:
-  name: ansible
-verifier:
-  name: ansible
