@@ -1,4 +1,5 @@
 --requirement=requirements.ansible.txt
 
-molecule[docker]==4.0.2
+molecule==24.2.0
+molecule-plugins[docker]==23.5.3
 ansible-lint>=6.8.2
