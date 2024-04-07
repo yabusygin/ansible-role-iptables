@@ -1,6 +1,11 @@
 Ansible Role for `iptables` Managed Firewall
 ============================================
 
+**DEPRECATED.** Use the Ansible collection [`yabusygin.netfilter`][Collection]
+instead.
+
+[Collection]: https://galaxy.ansible.com/ui/repo/published/yabusygin/netfilter/
+
 An Ansible role that configures `iptables` managed firewall. Firewall rules are
 persistent.
 
